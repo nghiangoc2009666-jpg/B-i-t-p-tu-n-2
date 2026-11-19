@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+	https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+
+	<persistence-unit name="jpa-hibernate-mssql">
+		<class>vn.iotstar.entity.User</class>
+		<class>vn.iotstar.entity.Category</class>
+		<class>vn.iotstar.entity.Video</class>
+
+		<properties>
+			<!-- Database ShoppingServiceJPA phải được tạo trước (sql/create-database.sql).
+			     Dùng cổng cố định 1433, KHÔNG ghi \SQLEXPRESS vào URL. -->
+			<property name="jakarta.persistence.jdbc.url"
+				value="jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=ShoppingServiceJPA" />
+			<property name="jakarta.persistence.jdbc.driver"
+				value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+			<property name="jakarta.persistence.jdbc.user" value="sa" />
+			<!-- SỬA thành mật khẩu sa của bạn. Đừng commit mật khẩu thật lên GitHub. -->
+			<property name="jakarta.persistence.jdbc.password" value="24110035" />
+
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<!-- update: tự tạo/cập nhật bảng users, categories, videos -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+		</properties>
+	</persistence-unit>
+</persistence>

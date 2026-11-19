@@ -1,0 +1,43 @@
+<%-- Thẻ hiển thị 1 video. Biến vào: v (Video), showActions (true => hiện nút Sửa/Xóa).
+     Trang chứa phải khai báo taglib c và fn. --%>
+<c:set var="posterUrl" value="" />
+<c:if test="${not empty v.poster}">
+    <c:choose>
+        <c:when test="${fn:startsWith(v.poster, 'http')}"><c:set var="posterUrl" value="${v.poster}" /></c:when>
+        <c:otherwise><c:url var="posterUrl" value="/image"><c:param name="fname" value="${v.poster}" /></c:url></c:otherwise>
+    </c:choose>
+</c:if>
+<c:url var="detailUrl" value="/video/detail"><c:param name="id" value="${v.videoId}" /></c:url>
+<div class="col-lg-4 col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+        <a href="${detailUrl}">
+            <c:choose>
+                <c:when test="${not empty posterUrl}">
+                    <img src="<c:out value='${posterUrl}'/>" class="card-img-top" style="height: 180px; object-fit: cover;" alt="poster">
+                </c:when>
+                <c:otherwise>
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                         style="height: 180px;">▶ Video</div>
+                </c:otherwise>
+            </c:choose>
+        </a>
+        <div class="card-body">
+            <h6 class="card-title"><a class="text-decoration-none" href="${detailUrl}"><c:out value="${v.title}" /></a></h6>
+            <div class="small text-muted">
+                <c:if test="${v.user != null}">Đăng bởi <c:out value="${v.user.fullName}" /> · </c:if>
+                ${v.views} lượt xem
+                <c:if test="${v.createdDate != null}"> · <fmt:formatDate value="${v.createdDate}" pattern="dd/MM/yyyy" /></c:if>
+            </div>
+            <c:if test="${v.active != 1}"><span class="badge bg-warning text-dark mt-1">Đang ẩn</span></c:if>
+        </div>
+        <c:if test="${showActions}">
+            <div class="card-footer bg-white">
+                <c:url var="editUrl" value="/video/edit"><c:param name="id" value="${v.videoId}" /></c:url>
+                <c:url var="delUrl" value="/video/delete"><c:param name="id" value="${v.videoId}" /></c:url>
+                <a class="btn btn-sm btn-outline-primary" href="${editUrl}">Sửa</a>
+                <a class="btn btn-sm btn-outline-danger" href="${delUrl}"
+                   onclick="return confirm('Bạn có chắc muốn xóa video này?');">Xóa</a>
+            </div>
+        </c:if>
+    </div>
+</div>
